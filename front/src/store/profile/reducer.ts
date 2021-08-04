@@ -14,7 +14,7 @@ const init: Profile = {
 const profileReducer = reducerWithInitialState(init).case(
 // case()は第一引数にアクション(profileAction)を, 第二引数にコールバック関数(setProfile)を渡しています
   profileActions.setProfile,
-// 第二引数の関数(setProfile)の引数は、第一引数が直前のprofileという state そのもの、第二引数がアクションから渡ってきたpayload
+// 第二引数の関数(setProfile)の引数は、第一引数が直前のprofileのstate そのもの、第二引数がアクションから渡ってきたpayload
   (state, payload) => ({
     ...state,
     ...payload
