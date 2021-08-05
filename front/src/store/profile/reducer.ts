@@ -7,18 +7,28 @@ const init: Profile = {
   name: "",
   description: "",
   birthday: "",
-  gender: ""
+  gender: "",
+
+  address: {
+    postalcode: "",
+    prefecture: "",
+    city: "",
+    restAddress: ""
+  }
 };
 
 // .case()をチェーンさせることでそれぞれのアクションでの処理を記述
-const profileReducer = reducerWithInitialState(init).case(
+const profileReducer = reducerWithInitialState(init)
 // case()は第一引数にアクション(profileAction)を, 第二引数にコールバック関数(setProfile)を渡しています
-  profileActions.setProfile,
-// 第二引数の関数(setProfile)の引数は、第一引数が直前のprofileのstate そのもの、第二引数がアクションから渡ってきたpayload
+  .case(profileActions.setProfile,
+// 第二引数の関数(setProfile)の引数は、第一引数が直前のProfileのstate そのもの、第二引数がアクションから渡ってきたpayload
   (state, payload) => ({
     ...state,
     ...payload
-  })
-);
+  }))
+  .case(profileActions.setAddress, (state, payload) => ({
+    ...state,
+    address: { ...state.address, ...payload }
+  }));
 
 export default profileReducer;

@@ -18,6 +18,7 @@ import profileActions from "../store/profile/actions";
 
 const Basic = () => {
   const dispatch = useDispatch();  // dispatch をするための関数を作成してくれる hooks
+  // useSelector()でStoreのstateを参照して処理する      reducerのstate.profile
   const profile = useSelector((state: RootState) => state.profile); //dispatchするための関数と状態を保持している
   const classes = useStyles();
  // 更新したい項目だけを受け取って reducer に dispatch しています。
