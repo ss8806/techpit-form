@@ -8,6 +8,7 @@ import { RootState } from "../domain/entity/rootState";
 import { Address as IAddress } from "../domain/entity/address";
 import { isPostalcode } from "../domain/services/address";
 import profileActions from "../store/profile/actions";
+import { searchAddressFromPostalcode } from "../store/profile/effects";
 import useStyles from "./styles";
 
 const Address = () => {
@@ -22,6 +23,7 @@ const Address = () => {
   const handlePostalcodeChange = (code: string) => {
     if (!isPostalcode(code)) return;
     dispatch(profileActions.setAddress({ postalcode: code }));
+    dispatch(searchAddressFromPostalcode(code));
   };
 
   return (
@@ -32,28 +34,28 @@ const Address = () => {
         label={PROFILE.ADDRESS.POSTALCODE}
         value={profile.address.postalcode}
         //onChange={e => handleAddressChange({ postalcode: e.target.value })}
-        onChange={e => handlePostalcodeChange(e.target.value)}
+        onChange={(e) => handlePostalcodeChange(e.target.value)}
       />
       <TextField
         fullWidth
         className={classes.formField}
         label={PROFILE.ADDRESS.PREFECTURE}
         value={profile.address.prefecture}
-        onChange={e => handleAddressChange({ prefecture: e.target.value })}
+        onChange={(e) => handleAddressChange({ prefecture: e.target.value })}
       />
       <TextField
         fullWidth
         className={classes.formField}
         label={PROFILE.ADDRESS.CITY}
         value={profile.address.city}
-        onChange={e => handleAddressChange({ city: e.target.value })}
+        onChange={(e) => handleAddressChange({ city: e.target.value })}
       />
       <TextField
         fullWidth
         className={classes.formField}
         label={PROFILE.ADDRESS.RESTADDRES}
         value={profile.address.restAddress}
-        onChange={e => handleAddressChange({ restAddress: e.target.value })}
+        onChange={(e) => handleAddressChange({ restAddress: e.target.value })}
       />
     </>
   );

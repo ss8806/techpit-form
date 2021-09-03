@@ -13,22 +13,26 @@ const init: Profile = {
     postalcode: "",
     prefecture: "",
     city: "",
-    restAddress: ""
-  }
+    restAddress: "",
+  },
 };
 
-// .case()をチェーンさせることでそれぞれのアクションでの処理を記述
 const profileReducer = reducerWithInitialState(init)
-// case()は第一引数にアクション(profileAction)を, 第二引数にコールバック関数(setProfile)を渡しています
-  .case(profileActions.setProfile,
-// 第二引数の関数(setProfile)の引数は、第一引数が直前のProfileのstate そのもの、第二引数がアクションから渡ってきたpayload
-  (state, payload) => ({
+  // .case()をチェーンさせることでそれぞれのアクションでの処理を記述
+  // case()は第一引数にアクション(profileAction)を, 第二引数にコールバック関数(setProfile)を渡しています
+  // 第二引数の関数(setProfile)の引数は、第一引数が直前のProfileのstate そのもの、第二引数がアクションから渡ってきたpayload
+  .case(profileActions.setProfile, (state, payload) => ({
+    // returnは省略されている
     ...state,
-    ...payload
+    ...payload,
   }))
   .case(profileActions.setAddress, (state, payload) => ({
+    // returnは省略されている
     ...state,
-    address: { ...state.address, ...payload }
+    address: { ...state.address, ...payload },
+  }))
+  .case(profileActions.searchAddress.done, (state, payload) => ({
+    ...state,
+    address: { ...state.address, ...payload.result },
   }));
-
 export default profileReducer;
