@@ -16,6 +16,11 @@ const init: Profile = {
     restAddress: "",
   },
   careers: [],
+  college: {
+    name: "",
+    faculty: "",
+    department: "",
+  },
 };
 
 const initCareer: Career = {
@@ -62,5 +67,9 @@ const profileReducer = reducerWithInitialState(init)
     ...state,
     // initCareerを追加しています。今回は ... を配列の展開で用いています。
     careers: [...state.careers, initCareer],
+  }))
+  .case(profileActions.setCollege, (state, payload) => ({
+    ...state,
+    college: { ...state.college, ...payload },
   }));
 export default profileReducer;

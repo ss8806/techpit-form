@@ -2,6 +2,7 @@ import actionCreatorFactory from "typescript-fsa";
 import { Profile } from "../../domain/entity/profile";
 import { Address } from "../../domain/entity/address";
 import { Career } from "../../domain/entity/career";
+import { College } from "../../domain/entity/college";
 
 // typescript-fsaを使うことで型情報を失わず簡単に定義することができる。
 // actionCreatorにはジェネリクス（型引数）が使われています。setProfileという action のpayload（reducer に渡す値）の型をこれで定義することができます。
@@ -22,6 +23,7 @@ const profileActions = {
   deleteCareer: actionCreator<number>("DELETE_CAREER"),
   // payloadはありません。これは、追加の際には初期値の職歴を新たに追加して職歴のフォームを追加で表示させるため
   addCareer: actionCreator<{}>("ADD_CAREER"),
+  setCollege: actionCreator<Partial<College>>("SET_COLLEGE"),
 };
 
 export default profileActions;
