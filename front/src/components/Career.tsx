@@ -7,11 +7,12 @@ import {
   Button,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { PROFILE } from "../domain/services/profile";
+
 import { RootState } from "../domain/entity/rootState";
 import { Career as ICareer } from "../domain/entity/career";
 import profileActions from "../store/profile/actions";
 import { exitEmptyCareers } from "../domain/services/career";
+
 import useStyles from "./styles";
 
 const Career = () => {
@@ -21,6 +22,7 @@ const Career = () => {
   // careersのみが必要なためuseSelectorではcareersのみを引っ張ってきています。
   const careers = useSelector((state: RootState) => state.profile.careers);
   const isAbleToAddCarrer = exitEmptyCareers(careers);
+  const validation = useSelector((state: RootState) => state.validation);
   // これで変更を redux に反映できるようになりました。何番目の職歴を編集したのかを識別するためにindexが必要なのでmap()の中から何番目の職歴なのかのindexを指定
   const handleChange = (member: Partial<ICareer>, i: number) => {
     dispatch(profileActions.setCareer({ career: member, index: i }));
@@ -43,19 +45,23 @@ const Career = () => {
           <TextField
             className={classes.formField}
             fullWidth
-            label={PROFILE.CAREERS.COMPANY}
+            error={!!validation.message.careers[i]?.company}
+            helperText={validation.message.careers[i]?.company}
+            label="会社名"
             value={c.company}
             onChange={(e) => handleChange({ company: e.target.value }, i)}
           />
           <TextField
             className={classes.formField}
             fullWidth
-            label={PROFILE.CAREERS.POSITION}
+            error={!!validation.message.careers[i]?.position}
+            helperText={validation.message.careers[i]?.position}
+            label="役職"
             value={c.position}
-            onChange={(e) => handleChange({ company: e.target.value }, i)}
+            onChange={(e) => handleChange({ position: e.target.value }, i)}
           />
           <div className={classes.careerSpan}>
-            <InputLabel shrink>{PROFILE.CAREERS.SPAN}</InputLabel>
+            <InputLabel shrink>期間</InputLabel>
             <Grid
               container
               spacing={1}
@@ -66,11 +72,13 @@ const Career = () => {
                 <TextField
                   fullWidth
                   type="month"
+                  error={!!validation.message.careers[i]?.startAt}
+                  helperText={validation.message.careers[i]?.startAt}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   value={c.startAt}
-                  onChange={(e) => handleChange({ company: e.target.value }, i)}
+                  onChange={(e) => handleChange({ startAt: e.target.value }, i)}
                 />
               </Grid>
               <Grid item xs={2}>
@@ -80,24 +88,26 @@ const Career = () => {
                 <TextField
                   fullWidth
                   type="month"
+                  error={!!validation.message.careers[i]?.endAt}
+                  helperText={validation.message.careers[i]?.endAt}
                   InputLabelProps={{
                     shrink: true,
                   }}
                   value={c.endAt}
-                  onChange={(e) => handleChange({ company: e.target.value }, i)}
+                  onChange={(e) => handleChange({ endAt: e.target.value }, i)}
                 />
-                <Button
-                  className={classes.button}
-                  onClick={() => handleDeleteCareer(i)}
-                  fullWidth
-                  variant="outlined"
-                  color="secondary"
-                >
-                  職歴 {i + 1} を削除
-                </Button>
               </Grid>
             </Grid>
           </div>
+          <Button
+            className={classes.button}
+            onClick={() => handleDeleteCareer(i)}
+            fullWidth
+            variant="outlined"
+            color="secondary"
+          >
+            職歴 {i + 1} を削除
+          </Button>
         </Fragment>
       ))}
       <Button

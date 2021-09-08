@@ -8,6 +8,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormHelperText,
 } from "@material-ui/core";
 
 import { RootState } from "../domain/entity/rootState";
@@ -23,7 +24,7 @@ const College = () => {
   const dispatch = useDispatch();
   const colleges = useSelector((state: RootState) => state.colleges);
   const profile = useSelector((state: RootState) => state.profile);
-
+  const validation = useSelector((state: RootState) => state.validation);
   const classes = useStyles();
 
   const handleChange = (name: string) => {
@@ -85,7 +86,6 @@ const College = () => {
       )}
       {profile.college.name && (
         <>
-          <div>{profile.college.name}が選択されています。</div>
           <TextField
             className={classes.formField}
             label={PROFILE.COLLEGE.NAME}
@@ -93,26 +93,34 @@ const College = () => {
             value={profile.college.name}
             disabled
           />
-          <FormControl fullWidth className={classes.formField}>
+          <FormControl
+            error={!!validation.message.college.faculty}
+            fullWidth
+            className={classes.formField}
+          >
             <InputLabel>{PROFILE.COLLEGE.FACULTY}</InputLabel>
             <Select
               value={profile.college.faculty}
               onChange={(e) =>
                 handleCollegeChange({
                   faculty: e.target.value as string,
+                  // 学科はリセットしないとwarnning
                   department: "",
                 })
               }
             >
-              {currentCollege.faculty.map((f) => (
+              {currentCollege?.faculty.map((f) => (
                 <MenuItem key={f.name} value={f.name}>
                   {f.name}
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>
+              {validation.message.college.faculty}
+            </FormHelperText>
           </FormControl>
           {currentFaculty?.department.length > 0 && (
-            <FormControl fullWidth className={classes.formField}>
+            <FormControl required fullWidth className={classes.formField}>
               <InputLabel>{PROFILE.COLLEGE.DEPARTMENT}</InputLabel>
               <Select
                 value={profile.college.department}
